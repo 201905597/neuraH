@@ -294,7 +294,7 @@ public class CustomerDAO
             String habito = habitoEstado.substring(0,habitoEstado.indexOf("#"));
             String estado = habitoEstado.substring(habitoEstado.indexOf("#")+1);
 
-            try (PreparedStatement pst = con.prepareStatement("INSERT INTO usuariohabitos (id,fecha,habito,estado,mmyyhabito) VALUES (\'" + idConectado + "\',\'" + fecha + "\',\'" + habito + "\',\'" + estado + "\', \'" + fecha + habito +"\')");
+            try (PreparedStatement pst = con.prepareStatement("INSERT INTO usuariohabitos (id,fecha,habito,estado,mmyyhabito) VALUES (\'" + idConectado + "\',\'" + fecha + "\',\'" + habito + "\',\'" + estado + "\', \'" + idConectado +fecha + habito +"\')");
                  ResultSet rs = pst.executeQuery()) {
 
 

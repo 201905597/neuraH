@@ -2,6 +2,7 @@ package ui;
 
 import client.Client;
 import dominio.Calendario;
+import dominio.Mes;
 import dominio.Psicologo;
 import dominio.Usuario;
 
@@ -30,10 +31,12 @@ public class JVentana extends JFrame
     private Usuario usuario;
     private Psicologo psicologo;
     JPanel pnlCentro;
+    boolean calendariosRecuperados;
 
     public JVentana()
     {
         super("Mental Health App");
+        calendariosRecuperados = false;
         fechaYemocion = new HashMap<String,String>();
         fechaYhabito = new HashMap<String,String>();
         this.setLayout(new BorderLayout());
@@ -193,9 +196,12 @@ public class JVentana extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        Calendario calendarioAnimo = new Calendario("Animo",usuario.getId());
-                        usuario.addCalendario(calendarioAnimo);
-                        CalendarDialog calendarDlg = new CalendarDialog(JVentana.this, true, calendarioAnimo, "Mi estado de ánimo");
+                        if (!usuario.getCalendariosHM().containsKey("Animo"))
+                        {
+                            Calendario calendarioAnimo = new Calendario("Animo",usuario.getId());
+                            usuario.addCalendario(calendarioAnimo);
+                        }
+                        CalendarDialog calendarDlg = new CalendarDialog(JVentana.this, true, JVentana.this.getUsuario().getCalendario("Animo"), "Mi estado de ánimo");
                     }
                 });
                 pnlCalendarAnimo.add(btnCalendarAnimo);
@@ -211,6 +217,16 @@ public class JVentana extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
+                        if (!usuario.getCalendariosHM().containsKey("Deporte"))
+                        {
+                            Calendario calendarioDeporte = new Calendario("Deporte",usuario.getId());
+                            usuario.addCalendario(calendarioDeporte);
+                        }
+                        if (!usuario.getCalendariosHM().containsKey("Sueño"))
+                        {
+                            Calendario calendarioSueño = new Calendario("Sueño",usuario.getId());
+                            usuario.addCalendario(calendarioSueño);
+                        }
                         HabitosDialog habitosDlg = new HabitosDialog(JVentana.this, true);
                     }
                 });
@@ -243,7 +259,7 @@ public class JVentana extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        ActividadesDialog juegoDialog = new ActividadesDialog(JVentana.this,true);
+                        ActividadesDialog actividadesDialog = new ActividadesDialog(JVentana.this,true);
                     }
                 });
                 pnlActividades.add(btnActividades);
@@ -297,9 +313,6 @@ public class JVentana extends JFrame
     public void setUsuario(String id, String nombre)
     {
         this.usuario = new Usuario(id, nombre);
-        //usuario.addCalendario(new Calendario("Animo",id));
-        //usuario.addCalendario(new Calendario("Deporte",id));
-        //usuario.addCalendario(new Calendario("Sueño",id));
     }
 
     public Usuario getUsuario()
@@ -310,5 +323,65 @@ public class JVentana extends JFrame
     public Psicologo getPsicologo()
     {
         return psicologo;
+    }
+
+    public void recuperarCalendarios(String id)
+    {
+        Client client = new Client();
+        HashMap<String,Object> session=new HashMap<String, Object>();
+        session.put("id",JVentana.this.getUsuario().getId());
+
+        HashSet<Mes> respuestaAnimos = new HashSet<Mes>();
+        HashSet<Mes> respuestaHabitos = new HashSet<Mes>();
+        HashSet<String> habitosbbdd = new HashSet<String>();
+
+        client.metodoClient("/recuperacionAnimo",session);
+        respuestaAnimos = (HashSet<Mes>) session.get("RespuestaRecAnimos");
+
+        if (!JVentana.this.getUsuario().getCalendariosHM().containsKey("Animo"))
+        {
+            Calendario calendario = new Calendario("Animo",JVentana.this.getUsuario().getId());
+            JVentana.this.getUsuario().addCalendario(calendario);
+            for (Mes mes : respuestaAnimos)
+            {
+                calendario.addMes(mes);
+            }
+        }
+
+        session=new HashMap<String, Object>();
+        session.put("id",JVentana.this.getUsuario().getId());
+        client.metodoClient("/recuperacionNombreHabitos",session);
+        habitosbbdd = (HashSet<String>) session.get("RespuestaRecNombreHabitos");
+
+        for (String habito : habitosbbdd)
+        {
+            session=new HashMap<String, Object>();
+            session.put("id",JVentana.this.getUsuario().getId());
+            session.put("habito",habito);
+            client.metodoClient("/recuperacionHabito",session);
+            respuestaHabitos = (HashSet<Mes>) session.get("RespuestaRecHabitos");
+
+            if (!JVentana.this.getUsuario().getCalendariosHM().containsKey(habito))
+            {
+                Calendario calendario = new Calendario(habito,JVentana.this.getUsuario().getId());
+                JVentana.this.getUsuario().addCalendario(calendario);
+                System.out.println(habito);
+                for (Mes mes : respuestaHabitos)
+                {
+                    calendario.addMes(mes);
+                }
+            }
+        }
+        JVentana.this.getUsuario().actualizarNotificaciones();
+        JVentana.this.setCalendariosRecuperados(true);
+    }
+
+    public void setCalendariosRecuperados(boolean recuperados)
+    {
+        this.calendariosRecuperados = recuperados;
+    }
+    public boolean calendariosRecuperados()
+    {
+        return calendariosRecuperados;
     }
 }

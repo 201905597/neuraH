@@ -166,7 +166,6 @@ public class CalendarDialog extends JDialog
                 HashMap<String,Object> session=new HashMap<String, Object>();
                 session.put("id",idConectado);
                 session.put("habito",tipoCalendar);
-                session.put("ventana",ventanaOwner);
 
                 HashSet<Mes> respuestaHSet = new HashSet<Mes>();
                 if (tipoCalendar == "Animo")
@@ -191,7 +190,7 @@ public class CalendarDialog extends JDialog
                     }
 
                 }
-                ventanaOwner.getUsuario().actualizarNotificaciones();
+                //ventanaOwner.getUsuario().actualizarNotificaciones();
             }
         });
 
@@ -231,6 +230,6 @@ public class CalendarDialog extends JDialog
             cmbMesesSeg.removeItem(cmbDefault);
         pnlCentro.add(pnlMesNuevo);
         pnlCentro.updateUI();
-        ventanaOwner.getUsuario().actualizarNotificaciones();
+        //ventanaOwner.getUsuario().actualizarNotificaciones();
     }
 }

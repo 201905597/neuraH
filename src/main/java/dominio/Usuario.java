@@ -11,6 +11,7 @@ public class Usuario implements Serializable
     private String id;
     private String nombre;
     private HashSet<Calendario> calendarios;
+    private HashMap<String,Calendario> calendariosHM;
     private HashMap<Actividad,Integer> actividadesHechas; //actividades realizadas y las veces que las ha realizado el usuario
     private HashSet<Notificacion> notificaciones;
 
@@ -18,6 +19,7 @@ public class Usuario implements Serializable
         this.id=id;
         this.nombre=nombre;
         this.calendarios = new HashSet<Calendario>();
+        this.calendariosHM = new HashMap<String,Calendario>();
         this.actividadesHechas = new HashMap<Actividad, Integer>();
         this.notificaciones = new HashSet<Notificacion>();
     }
@@ -33,6 +35,7 @@ public class Usuario implements Serializable
     public void addCalendario(Calendario calendario)
     {
         calendarios.add(calendario);
+        calendariosHM.put(calendario.getTipoCalendar(), calendario);
     }
 
     public void addActividad(Actividad actividad)
@@ -60,28 +63,32 @@ public class Usuario implements Serializable
                 {
                     String textoNotif = "¡ENHORABUENA! Has conseguido estar feliz en 10 o más días de " + mes.getNombreMes();
                     Notificacion notificacionFeliz = new Notificacion(textoNotif);
-                    notificaciones.add(notificacionFeliz);
+                    if (!notificaciones.contains(notificacionFeliz))
+                        notificaciones.add(notificacionFeliz);
                 }
 
                 if (mes.getDias("Triste") >= 5)
                 {
                     String textoNotif = "Has estado triste en " + mes.getNombreMes() + ". Te recomendamos que hagas actividades de exterior.";
                     Notificacion notificacionTriste = new Notificacion(textoNotif);
-                    notificaciones.add(notificacionTriste);
+                    if (!notificaciones.contains(notificacionTriste))
+                        notificaciones.add(notificacionTriste);
                 }
 
                 if (mes.getDias("Hecho") >= 10)
                 {
                     String textoNotif = "¡ENHORABUENA! Has seguido el  hábito " + mes.getTipoMes() + " 10 o más días de " + mes.getNombreMes();
                     Notificacion notificacionHecho = new Notificacion(textoNotif);
-                    notificaciones.add(notificacionHecho);
+                    if (!notificaciones.contains(notificacionHecho))
+                        notificaciones.add(notificacionHecho);
                 }
 
                 if (mes.getDias("No hecho") >= 5)
                 {
                     String textoNotif = "En " + mes.getNombreMes() + ", no seguiste el  hábito " + mes.getTipoMes() + ". ¿Por qué no lo retomas?";
                     Notificacion notificacionNoHecho = new Notificacion(textoNotif);
-                    notificaciones.add(notificacionNoHecho);
+                    if (!notificaciones.contains(notificacionNoHecho))
+                        notificaciones.add(notificacionNoHecho);
                 }
             }
         }
@@ -90,5 +97,28 @@ public class Usuario implements Serializable
     public HashSet<Notificacion> getNotificaciones()
     {
         return notificaciones;
+    }
+
+    public HashMap<String,Calendario> getCalendariosHM()
+    {
+        return calendariosHM;
+    }
+
+    public HashSet<Calendario> getCalendariosHS()
+    {
+        return calendarios;
+    }
+
+    public Calendario getCalendario(String tipoCalendario)
+    {
+        Calendario calendario = null;
+        for (Map.Entry<String, Calendario> entry : calendariosHM.entrySet())
+        {
+        String key = entry.getKey();
+        Calendario value = entry.getValue();
+        if (tipoCalendario.equals(key))
+            calendario = value;
+        }
+        return calendario;
     }
 }

@@ -64,9 +64,12 @@ public class HabitosDialog extends JDialog
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    Calendario calendarioHabito = new Calendario(btn.getText(),ventanaOwner.getUsuario().getId());
-                    ventanaOwner.getUsuario().addCalendario(calendarioHabito);
-                    CalendarDialog calendarDlg = new CalendarDialog(ventanaOwner, true, calendarioHabito, btn.getText());
+                    if (!ventanaOwner.getUsuario().getCalendariosHM().containsKey(btn.getText()))
+                    {
+                        Calendario calendarioHabito = new Calendario(btn.getText(),ventanaOwner.getUsuario().getId());
+                        ventanaOwner.getUsuario().addCalendario(calendarioHabito);
+                    }
+                    CalendarDialog calendarDlg = new CalendarDialog(ventanaOwner, true, ventanaOwner.getUsuario().getCalendario(btn.getText()), btn.getText());
                 }
             });
         }
