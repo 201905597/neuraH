@@ -59,7 +59,7 @@ public class SocketServer extends Thread
                     break;
                 case ("/animoUsuario"):
                     CustomerControler customerControler1=new CustomerControler();
-                    customerControler1.insertarEmociones((String)mensajeIn.getSession().get("id"),(HashMap<String, String>) mensajeIn.getSession().get("hmFE"));
+                    customerControler1.insertarEmociones((String)mensajeIn.getSession().get("id"),(String)mensajeIn.getSession().get("fecha"),(String)mensajeIn.getSession().get("emocion"));
                     mensajeOut.setContext("/animoUsuarioResponse");
                     HashMap<String,Object> session1=new HashMap<String, Object>();
                     //session.put("RespuestaAnimo",var1);
@@ -114,7 +114,7 @@ public class SocketServer extends Thread
                     break;
                 case ("/getListaActividades"):
                     CustomerControler customerControler8=new CustomerControler();
-                    ArrayList<Actividad> var8 = customerControler8.busquedaActividades((String)mensajeIn.getSession().get("lugar"),(boolean)mensajeIn.getSession().get("gratis"));
+                    ArrayList<Actividad> var8 = customerControler8.busquedaActividades((String)mensajeIn.getSession().get("lugar"),(Boolean)mensajeIn.getSession().get("gratis"));
                     mensajeOut.setContext("/getListaActividadesResponse");
                     HashMap<String,Object> session8=new HashMap<String, Object>();
                     session8.put("RespuestaGetActividades",var8);

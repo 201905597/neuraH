@@ -167,12 +167,14 @@ public class ColoresDialog extends JDialog
                     Client client = new Client();
                     HashMap<String,Object> session = new HashMap<String,Object>();
                     session.put("id",idConectado);
+                    session.put("fecha",fecha); //new
                     if (tipoDia == "Animo")
                     {
                         Animo animo = new Animo(btnSelected.getText());
                         diaOwner.getDia().setAnimo(animo);
                         ventanaOwner.addFechaEmocion(fecha,btnSelected.getText());
-                        session.put("hmFE",ventanaOwner.getHmFechaEmocion()); //CAMBIAR PARA USAR ANIMO.JAVA
+                        session.put("emocion",btnSelected.getText());
+                        //session.put("hmFE",ventanaOwner.getHmFechaEmocion()); //CAMBIAR PARA USAR ANIMO.JAVA
                         client.metodoClient("/animoUsuario",session);
                     }
                     else

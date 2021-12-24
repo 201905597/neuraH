@@ -1,9 +1,10 @@
 package message;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Message
+public class Message implements Serializable
 {
     /**
      *

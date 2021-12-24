@@ -278,7 +278,7 @@ public class JVentana extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        NotificDialog infoDlg = new NotificDialog(JVentana.this, true);
+                        NotificDialog notificDialog = new NotificDialog(JVentana.this, true);
                     }
                 });
 

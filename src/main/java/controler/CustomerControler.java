@@ -25,7 +25,8 @@ public class CustomerControler
         return CustomerDAO.autenticarAlPsicologo(id,centro);
     }
 
-    public void insertarEmociones(String id, HashMap<String,String> hm){CustomerDAO.rellenarAnimo(id,hm);}
+    //public void insertarEmociones(String id, HashMap<String,String> hm){CustomerDAO.rellenarAnimo(id,hm);}
+    public void insertarEmociones(String id, String fecha, String emocion){CustomerDAO.rellenarAnimo(id,fecha,emocion);}
 
     public HashSet<Mes> recuperacionDeAnimos(String id){return CustomerDAO.recuperarAnimos(id);}
 
@@ -37,5 +38,5 @@ public class CustomerControler
 
     public HashMap<String,String> recuperacionPacientes(String id){return CustomerDAO.recuperarPacientes(id);}
 
-    public ArrayList<Actividad> busquedaActividades(String lugar, boolean gratis){return CustomerDAO.getListaActividades(lugar,gratis);}
+    public ArrayList<Actividad> busquedaActividades(String lugar, Boolean gratis){return CustomerDAO.getListaActividades(lugar,gratis);}
 }

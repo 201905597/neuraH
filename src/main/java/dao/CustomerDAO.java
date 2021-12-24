@@ -1,9 +1,7 @@
 package dao;
 
 import domain.Customer;
-import dominio.Actividad;
-import dominio.Dia;
-import dominio.Mes;
+import dominio.*;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -162,7 +160,7 @@ public class CustomerDAO
      * @param idConectado id del usuario que se ha conectado
      * @param fechaYemocion mapa fecha --> emocion (el estado de ánimo del usuario en dicha fecha)
      */
-    public static void rellenarAnimo(String idConectado, HashMap<String,String> fechaYemocion)
+    /*public static void rellenarAnimo(String idConectado, HashMap<String,String> fechaYemocion)
     {
 
         Connection con = ConnectionDAO.getInstance().getConnection();
@@ -183,6 +181,23 @@ public class CustomerDAO
 
                 System.out.println(ex.getMessage());
             }
+        }
+
+    }*/
+    public static void rellenarAnimo(String idConectado, String fecha, String emocion)
+    {
+
+        Connection con = ConnectionDAO.getInstance().getConnection();
+
+        String idfecha= idConectado+fecha;
+
+        try (PreparedStatement pst = con.prepareStatement("INSERT INTO usuarioanimos (id,fecha,emocion,idfecha) VALUES (\'" + idConectado + "\',\'" + fecha + "\',\'" + emocion + "\',\'" + idfecha + "\')");
+             ResultSet rs = pst.executeQuery()) {
+
+
+        } catch (SQLException ex) {
+
+            System.out.println(ex.getMessage());
         }
 
     }
@@ -245,6 +260,9 @@ public class CustomerDAO
                         if (entry.getKey().substring(2).equals(day.getMesYAnio()) && entry.getKey().substring(0,2).equals(diaDosDigitos))
                         {
                             day.setAsociacion(emocion);
+                            day.setColoreado(1);
+                            Animo animo = new Animo(emocion);
+                            day.setAnimo(animo);
                             //day.setBtnColor(colorEmocion.get(emocion));
                         }
                     }
@@ -347,6 +365,9 @@ public class CustomerDAO
                         if (entry.getKey().substring(2).equals(day.getMesYAnio()) && entry.getKey().substring(0,2).equals(diaDosDigitos))
                         {
                             day.setAsociacion(habito);
+                            day.setColoreado(1);
+                            Habito habitoNuevo = new Habito(estado,habito);
+                            day.setHabito(habitoNuevo);
                             //day.setBtnColor(habitoColor.get(estado));
                         }
                     }
@@ -427,7 +448,7 @@ public class CustomerDAO
         return pacientes;
     }
 
-    public static ArrayList<Actividad> getListaActividades(String lugar, boolean gratis)
+    public static ArrayList<Actividad> getListaActividades(String lugar, Boolean gratis)
     {
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
         Connection con = ConnectionDAO.getInstance().getConnection();

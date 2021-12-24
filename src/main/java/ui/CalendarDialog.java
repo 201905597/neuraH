@@ -22,14 +22,14 @@ public class CalendarDialog extends JDialog
     private String strTitulo;
     private String tipoCalendar;
     private JVentana ventanaOwner;
-    private HashMap<String,Mes> hmMeses; // Septiembre2021, Mes
+    private HashMap<String,MonthPanel> hmMeses; // Septiembre2021, Mes
     private JComboBox cmbMesesSeg;
     private JComboBox cmbNuevosMeses;
     private JButton btnAnadirMes;
     private JTextField txtAnio;
     private String idConectado;
     //private ArrayList<MonthPanel> mesesArray;
-    private HashSet<MonthPanel> mesesHSet;
+    //private HashSet<MonthPanel> mesesHSet;
     JPanel pnlCentro;
 
     private JButton btnVerMeses;
@@ -44,10 +44,10 @@ public class CalendarDialog extends JDialog
         this.setTitle(calendario.getTipoCalendar());
         this.strTitulo = title;
         this.ventanaOwner = ventanaOwner;
-        this.hmMeses = new HashMap<String,Mes>();
+        this.hmMeses = new HashMap<String,MonthPanel>();
         this.idConectado = calendario.getIdConectado();
         this.tipoCalendar = calendario.getTipoCalendar();
-        mesesHSet = new HashSet<MonthPanel>();
+        //mesesHSet = new HashSet<MonthPanel>();
 
         //PANEL NORTE ----------------------------------------------------------------------------------
         JPanel pnlNorte = new JPanel();
@@ -70,49 +70,25 @@ public class CalendarDialog extends JDialog
                 String mesAnioSel = String.valueOf(cmbMesesSeg.getSelectedItem());
                 if (mesAnioSel != null && mesAnioSel != "No hay seguimiento aún")
                 {
-                    for (MonthPanel mesPanel : mesesHSet)
-                    {
-                        if (mesPanel != null)
-                        {
-                            if (mesPanel.getMes().getMesYAnio().equals(mesAnioSel))
-                            {
-                                for (DayPanel day : mesPanel.getDiasArrayList())
-                                {
-                                    day.getBtnDia().addActionListener(new ActionListener()
-                                    {
-                                        @Override
-                                        public void actionPerformed(ActionEvent e)
-                                        {
-                                            ColoresDialog coloresDlg = new ColoresDialog(day.getDia().getFecha(),ventanaOwner,true, day,ventanaOwner.getUsuario().getId(), tipoCalendar);
-                                        }
-                                    });
-                                }
-                                mesPanel.setVisible(true);
-                                mesPanel.revalidate();
-                                mesPanel.updateUI();
-                                pnlCentro.updateUI();
-                            }
-                            else
-                                mesPanel.setVisible(false);
-                        }
-                    }
-                    /*for(Map.Entry<String, Mes> entry : hmMeses.entrySet())
+                    for(Map.Entry<String,MonthPanel> entry : hmMeses.entrySet())
                     {
                         String mes = entry.getKey();
                         if (mes != null)
                         {
                             if (mes.equals(mesAnioSel))
                             {
+                                System.out.println("HOLA");
                                 MonthPanel mesPnl = entry.getValue();
 
-                                for (DayPanel day : mesPnl.getMes().getDayArray())
+                                for (DayPanel day : mesPnl.getDiasArrayList())
                                 {
                                     day.getBtnDia().addActionListener(new ActionListener()
                                     {
                                         @Override
                                         public void actionPerformed(ActionEvent e)
                                         {
-                                            ColoresDialog coloresDlg = new ColoresDialog(day.getDia().getFecha(),ventanaOwner,true, day,ventanaOwner.getIdConectado(), tipoCalendar);
+                                            System.out.println("ENTRO EN EL ACTION PERFORMED aqui");
+                                            ColoresDialog coloresDlg = new ColoresDialog(day.getDia().getFecha(),ventanaOwner,true, day,ventanaOwner.getUsuario().getId(), tipoCalendar);
                                         }
                                     });
                                 }
@@ -124,7 +100,7 @@ public class CalendarDialog extends JDialog
                             else
                                 entry.getValue().setVisible(false);
                         }
-                    }*/
+                    }
                 }
             }
         });
@@ -208,8 +184,8 @@ public class CalendarDialog extends JDialog
                 {
                     if (!mesesAdded.contains(mes.getMesYAnio()))
                     {
-                        MonthPanel mesPanel = new MonthPanel(mes, ventanaOwner);
-                        mesesHSet.add(mesPanel);
+                        //MonthPanel mesPanel = new MonthPanel(mes, ventanaOwner);
+                        //hmMeses.put(mes.getMesYAnio(),mesPanel);
                         mesesAdded.add(mes.getMesYAnio());
                         CalendarDialog.this.addMonthPnl(mes);
                     }
@@ -249,7 +225,7 @@ public class CalendarDialog extends JDialog
     {
         calendario.addMes(mesNuevo);
         MonthPanel pnlMesNuevo = new MonthPanel(mesNuevo, ventanaOwner);
-        hmMeses.put(mesNuevo.getMesYAnio(), mesNuevo);
+        hmMeses.put(mesNuevo.getMesYAnio(), pnlMesNuevo);
         cmbMesesSeg.addItem(mesNuevo.getMesYAnio());
         if (cmbMesesSeg.getSelectedItem().equals(cmbDefault))
             cmbMesesSeg.removeItem(cmbDefault);
