@@ -43,20 +43,25 @@ public class Usuario implements Serializable
         calendariosHM.put(calendario.getTipoCalendar(), calendario);
     }
 
-    public void addActividad(Actividad actividad)
+    public void addActividad(dominio.Actividad actividad)
     {
         int veces = 1;
-        if (!actividadesHechas.isEmpty())
+
+        if (!Usuario.this.getActividadesHechas().isEmpty())
         {
-            for (Map.Entry<Actividad, Integer> entry : actividadesHechas.entrySet())
+            System.out.println("LLEGO AQUI!");
+            for (Map.Entry<dominio.Actividad, Integer> entry : actividadesHechas.entrySet())
             {
                 if (entry != null)
                 {
-                    Actividad key = entry.getKey();
+                    dominio.Actividad key = entry.getKey();
+                    String descripcion = key.getDescripcion();
+                    System.out.println("descripcion de la actividad del mapa" + descripcion);
                     int value = entry.getValue();
-                    if (key.equals(actividad))
+                    if (descripcion.equals(actividad.getDescripcion()))
                     {
-                        veces = value + 1;
+                        veces = value + veces;
+                        System.out.println("VECES EN addActividad en user" + veces);
                     }
                 }
             }

@@ -2,6 +2,7 @@ package dao;
 
 import domain.Customer;
 import dominio.*;
+import dominio.Actividad;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -480,6 +481,11 @@ public class CustomerDAO
         return actividades;
     }
 
+    /**
+     * Método para rellenar la tabla de actividades que hace cada usuario (y las veces que ha hecho cada una)
+     * @param idConectado del usuario
+     * @param actividades las actividades que tiene hechas (actualizadas)
+     */
     public static void rellenarActividades(String idConectado, HashMap<Actividad,Integer> actividades)
     {
         Connection con = ConnectionDAO.getInstance().getConnection();
@@ -494,7 +500,7 @@ public class CustomerDAO
             String idActividad = idConectado + descripcion;
 
             //Si está vacío, insertamos; si no, actualizamos
-            int existeId = 0;
+            boolean existeId = false;
             int vecesPostgre = 0;
             try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarioactividades");
                  ResultSet rs = pst.executeQuery()) {
@@ -504,7 +510,7 @@ public class CustomerDAO
                     if(idConectado.equals(rs.getString(1)) && descripcion.equals(rs.getString(2)))
                     {
                         System.out.println("Este usuario tiene esta actividad guardada");
-                        existeId=1;
+                        existeId=true;
                         vecesPostgre = Integer.parseInt(rs.getString(3));
                     }
                 }
@@ -514,7 +520,7 @@ public class CustomerDAO
             }
 
             String statement;
-            if (existeId == 0)
+            if (!existeId)
                 statement = "INSERT INTO usuarioactividades (id,Actividad,veces,lugar,gratis,idactividad) VALUES (\'" + idConectado + "\',\'" + descripcion + "\'," + veces+ ",\'" + lugar + "\'," + gratis + ", \'" + idActividad +"\')";
             else
             {
@@ -533,10 +539,15 @@ public class CustomerDAO
         }
     }
 
+    /**
+     * Método que lee de la bbdd las actividades que ha hecho el usuario
+     * @param idConectado del usuario
+     * @return las actividades guardadas
+     */
     public static HashMap<Actividad,Integer> recuperarActividades(String idConectado)
     {
         HashMap<Actividad,Integer> actividades = new HashMap<Actividad,Integer>();
-        Connection con = ConnectionDAO.getInstance().getConnection();
+        Connection con = dao.ConnectionDAO.getInstance().getConnection();
 
         try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarioactividades");
              ResultSet rs = pst.executeQuery()) {
@@ -545,6 +556,7 @@ public class CustomerDAO
                 if (idConectado.equals(rs.getString(1))) {
                     Actividad actividad = new Actividad(rs.getString(2),rs.getString(4),Boolean.parseBoolean(rs.getString(5)));
                     Integer veces = Integer.parseInt(rs.getString(3));
+                    System.out.println("HOLA HOLO HOLU HELLO " + actividad.getDescripcion() + "--" + veces);
                     actividades.put(actividad,veces);
                 }
             }

@@ -262,7 +262,7 @@ public class JVentana extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        ActividadesDialog actividadesDialog = new ActividadesDialog(JVentana.this,true);
+                        ui.ActividadesDialog actividadesDialog = new ui.ActividadesDialog(JVentana.this,true);
                     }
                 });
                 pnlActividades.add(btnActividades);
@@ -321,9 +321,10 @@ public class JVentana extends JFrame
         session.put("id",id);
         client.metodoClient("/recuperacionActividades",session);
         HashMap<dominio.Actividad,Integer> actividades = (HashMap<dominio.Actividad,Integer>) session.get("RespuestaGetActividades");
-        System.out.println(actividades);
+
         if (actividades != null)
             usuario.setActividades(actividades);
+        System.out.println("ACTIVIDADES AL SETTEAR EL USUARIO: " + actividades);
     }
 
     public Usuario getUsuario()

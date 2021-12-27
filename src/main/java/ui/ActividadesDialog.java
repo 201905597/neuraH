@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class ActividadesDialog extends JDialog
 {
-    JVentana ventanaOwner;
+    ui.JVentana ventanaOwner;
     JLabel lblPropuesta;
     JRadioButton btnInterior;
     JRadioButton btnExterior;
@@ -22,8 +22,9 @@ public class ActividadesDialog extends JDialog
     ButtonGroup btnGroup;
     JButton btnMarcar;
     Actividad actividad;
+    JPanel pnlEste = new JPanel();
 
-    public ActividadesDialog(JVentana ventanaOwner, boolean modal)
+    public ActividadesDialog(ui.JVentana ventanaOwner, boolean modal)
     {
         this.ventanaOwner = ventanaOwner;
         this.setModal(modal);
@@ -94,30 +95,6 @@ public class ActividadesDialog extends JDialog
         this.add(pnlCentro,BorderLayout.CENTER);
         //-------------------------------------------------------------------------------
 
-        //ESTE --------------------------------------------------------------------------------------
-        JPanel pnlEste = new JPanel();
-        pnlEste.setBackground(new Color(253,236,250));
-        pnlEste.setLayout(new BoxLayout(pnlEste, BoxLayout.Y_AXIS));
-        JLabel lblMarcar = new JLabel("Marcar actividad como hecha:");
-        btnMarcar = new JButton("Hecha");
-        btnMarcar.setEnabled(false);
-        btnMarcar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ventanaOwner.getUsuario().addActividad(actividad); //add actividad
-                JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
-                Client client = new Client();
-                HashMap<String,Object> session = new HashMap<String,Object>();
-                session.put("id",ventanaOwner.getUsuario().getId());
-                session.put("hm",ventanaOwner.getUsuario().getActividadesHechas());
-                //System.out.println(ventanaOwner.getUsuario().getActividadesHechas());
-                client.metodoClient("/insertarActividades",session);
-            }
-        });
-        pnlEste.add(lblMarcar);
-        pnlEste.add(btnMarcar);
-        this.add(pnlEste,BorderLayout.EAST);
-        //-------------------------------------------------------------------------------------------
 
         //SUR ---------------------------------------------------------------------------
         JPanel pnlSur = new JPanel();
@@ -160,6 +137,30 @@ public class ActividadesDialog extends JDialog
         this.add(pnlSur,BorderLayout.SOUTH);
         //-------------------------------------------------------------------------------------------
 
+        //ESTE --------------------------------------------------------------------------------------
+        //JPanel pnlEste = new JPanel();
+        pnlEste.setBackground(new Color(253,236,250));
+        pnlEste.setLayout(new BoxLayout(pnlEste, BoxLayout.Y_AXIS));
+        JLabel lblMarcar = new JLabel("Marcar actividad como hecha:");
+        btnMarcar = new JButton("Hecha");
+        btnMarcar.setEnabled(false);
+        btnMarcar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ventanaOwner.getUsuario().addActividad(actividad); //add actividad
+                JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
+                Client client = new Client();
+                HashMap<String,Object> session = new HashMap<String,Object>();
+                session.put("id",ventanaOwner.getUsuario().getId());
+                session.put("hm",ventanaOwner.getUsuario().getActividadesHechas());
+                System.out.println("despues del add" + ventanaOwner.getUsuario().getActividadesHechas());
+                client.metodoClient("/insertarActividades",session);
+            }
+        });
+        pnlEste.add(lblMarcar);
+        pnlEste.add(btnMarcar);
+        this.add(pnlEste,BorderLayout.EAST);
+        //-------------------------------------------------------------------------------------------
 
 
         this.pack();

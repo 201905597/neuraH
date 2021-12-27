@@ -10,12 +10,12 @@ import java.util.HashMap;
 
 public class UsernameDialog extends JDialog
 {
-    private JVentana ventanaOwner;
+    private ui.JVentana ventanaOwner;
     JTextField txtId,jtxf,txtCentro;
     JToggleButton check;
     String tipo;
 
-    public UsernameDialog(JVentana ventanaOwner, boolean modal) {
+    public UsernameDialog(ui.JVentana ventanaOwner, boolean modal) {
         this.addWindowListener(new WindowAdapter() {
 
             public void windowOpened(WindowEvent e) {
