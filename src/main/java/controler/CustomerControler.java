@@ -39,4 +39,8 @@ public class CustomerControler
     public HashMap<String,String> recuperacionPacientes(String id){return CustomerDAO.recuperarPacientes(id);}
 
     public ArrayList<Actividad> busquedaActividades(String lugar, Boolean gratis){return CustomerDAO.getListaActividades(lugar,gratis);}
+
+    public HashMap<Actividad,Integer> recuperacionActividades(String id) {return CustomerDAO.recuperarActividades(id);}
+
+    public void insertarActividades(String idConectado, HashMap<Actividad,Integer> actividades) {CustomerDAO.rellenarActividades(idConectado,actividades);}
 }

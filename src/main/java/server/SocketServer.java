@@ -122,6 +122,25 @@ public class SocketServer extends Thread
                     objectOutputStream.writeObject(mensajeOut);
                     System.out.println("setteo el contexto");
                     break;
+                case ("/insertarActividades"):
+                    CustomerControler customerControler9=new CustomerControler();
+                    customerControler9.insertarActividades((String)mensajeIn.getSession().get("id"),(HashMap<Actividad,Integer>)mensajeIn.getSession().get("hm"));
+                    mensajeOut.setContext("/insertarActividadesResponse");
+                    HashMap<String,Object> session9=new HashMap<String, Object>();
+                    mensajeOut.setSession(session9);
+                    objectOutputStream.writeObject(mensajeOut);
+                    System.out.println("setteo el contexto");
+                    break;
+                case ("/recuperacionActividades"):
+                    CustomerControler customerControler10=new CustomerControler();
+                    HashMap<Actividad,Integer> var10 = customerControler10.recuperacionActividades((String)mensajeIn.getSession().get("id"));
+                    mensajeOut.setContext("/RecuperacionActividadesResponse");
+                    HashMap<String,Object> session10=new HashMap<String, Object>();
+                    session10.put("RespuestaRecActividades",var10);
+                    mensajeOut.setSession(session10);
+                    objectOutputStream.writeObject(mensajeOut);
+                    System.out.println("setteo el contexto");
+                    break;
                 default:
                     System.out.println("\nParámetro no encontrado");
                     break;

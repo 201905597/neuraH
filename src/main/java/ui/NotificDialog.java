@@ -15,7 +15,8 @@ import java.util.HashSet;
 
 public class NotificDialog extends JDialog
 {
-    private JVentana  ventanaOwner;
+    //PONER SCROLLPANE!!!!!!
+    private JVentana ventanaOwner;
     private HashSet<Notificacion> notificaciones;
     ArrayList<JLabel> jlabels;
 
@@ -62,7 +63,7 @@ public class NotificDialog extends JDialog
         //----------------------------------------------------------------
 
         this.pack();
-        this.setSize(400,400);
+        this.setSize(600,400);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }

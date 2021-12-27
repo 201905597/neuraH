@@ -13,6 +13,7 @@ import java.util.Random;
 
 public class ActividadesDialog extends JDialog
 {
+    JVentana ventanaOwner;
     JLabel lblPropuesta;
     JRadioButton btnInterior;
     JRadioButton btnExterior;
@@ -24,11 +25,13 @@ public class ActividadesDialog extends JDialog
 
     public ActividadesDialog(JVentana ventanaOwner, boolean modal)
     {
+        this.ventanaOwner = ventanaOwner;
         this.setModal(modal);
         this.setTitle("Actividades");
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
         this.actividades = new ArrayList<Actividad>();
+        this.actividad = new Actividad();
 
         //NORTE -------------------------------------------------------------------
         JLabel lblTitulo = new JLabel("IDEAS DE ACTIVIDADES",SwingConstants.CENTER);
@@ -54,8 +57,10 @@ public class ActividadesDialog extends JDialog
         pnlOeste.add(lblLugar);
         btnGroup = new ButtonGroup();
         btnInterior = new JRadioButton("Interior");
+        btnInterior.setActionCommand("Interior");
         btnInterior.setSelected(true);
         btnExterior = new JRadioButton("Exterior");
+        btnExterior.setActionCommand("Exterior");
         btnInterior.setBackground(new Color(253,236,250));
         btnExterior.setBackground(new Color(253,236,250));
         btnGroup.add(btnInterior);
@@ -80,7 +85,7 @@ public class ActividadesDialog extends JDialog
         pnlPropuesta = new JPanel();
         pnlPropuesta.setBackground(Color.WHITE);
         lblPropuesta = new JLabel("\n\n",SwingConstants.CENTER);
-        lblPropuesta.setFont(new Font("Basic", Font.BOLD, 30));
+        lblPropuesta.setFont(new Font("Basic", Font.BOLD, 20));
         lblPropuesta.setHorizontalAlignment(JLabel.CENTER);
         lblPropuesta.setVerticalAlignment(JLabel.CENTER);
         pnlPropuesta.add(lblPropuesta);
@@ -95,6 +100,20 @@ public class ActividadesDialog extends JDialog
         pnlEste.setLayout(new BoxLayout(pnlEste, BoxLayout.Y_AXIS));
         JLabel lblMarcar = new JLabel("Marcar actividad como hecha:");
         btnMarcar = new JButton("Hecha");
+        btnMarcar.setEnabled(false);
+        btnMarcar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ventanaOwner.getUsuario().addActividad(actividad); //add actividad
+                JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
+                Client client = new Client();
+                HashMap<String,Object> session = new HashMap<String,Object>();
+                session.put("id",ventanaOwner.getUsuario().getId());
+                session.put("hm",ventanaOwner.getUsuario().getActividadesHechas());
+                //System.out.println(ventanaOwner.getUsuario().getActividadesHechas());
+                client.metodoClient("/insertarActividades",session);
+            }
+        });
         pnlEste.add(lblMarcar);
         pnlEste.add(btnMarcar);
         this.add(pnlEste,BorderLayout.EAST);
@@ -110,33 +129,37 @@ public class ActividadesDialog extends JDialog
             public void actionPerformed(ActionEvent e) {
                 Client client = new Client();
                 HashMap<String,Object> session = new HashMap<String,Object>();
-                session.put("lugar",btnGroup.getSelection());
+                session.put("lugar",btnGroup.getSelection().getActionCommand());
+                System.out.println(btnGroup.getSelection().getActionCommand());
                 if (chkGratis.isSelected())
-                    session.put("gratis",true);
+                {
+                    Boolean b = true;
+                    session.put("gratis",b);
+                }
                 else
-                    session.put("gratis",false);
+                {
+                    Boolean b = false;
+                    session.put("gratis",b);
+                }
+
                 client.metodoClient("/getListaActividades",session);
                 actividades = (ArrayList<Actividad>) session.get("RespuestaGetActividades");
+                for (Actividad act : actividades)
+                    System.out.println("Descripcion: " + act.getDescripcion());
                 //Se elige una actividad aleatoria de las que cumplen los requisitos de los filtros
-                Random randomGen = new Random();
-                int indice = randomGen.nextInt(actividades.size());
+                int indice = (int) (Math.random() * actividades.size());
                 actividad = actividades.get(indice);
+                System.out.println(actividad.getDescripcion());
                 lblPropuesta.setText(actividad.getDescripcion());
-
-                btnMarcar.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        ventanaOwner.getUsuario().addActividad(actividad); //add actividad
-                        JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
-                    }
-                });
-
                 pnlPropuesta.updateUI();
+                btnMarcar.setEnabled(true);
+                pnlEste.updateUI();
             }
         });
         pnlSur.add(btnGenerarActividad);
         this.add(pnlSur,BorderLayout.SOUTH);
         //-------------------------------------------------------------------------------------------
+
 
 
         this.pack();

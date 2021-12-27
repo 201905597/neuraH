@@ -16,7 +16,7 @@ import java.util.Map;
 public class CustomerDAO
 {
     public static void getClientes(ArrayList<Customer> lista) {
-        Connection con=ConnectionDAO.getInstance().getConnection();
+        Connection con= ConnectionDAO.getInstance().getConnection();
         try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarios where id= 1");
              ResultSet rs = pst.executeQuery()) {
 
@@ -364,7 +364,7 @@ public class CustomerDAO
                         String estado = habitoEstado.substring(habitoEstado.indexOf("#")+1);
                         if (entry.getKey().substring(2).equals(day.getMesYAnio()) && entry.getKey().substring(0,2).equals(diaDosDigitos))
                         {
-                            day.setAsociacion(habito);
+                            day.setAsociacion(estado);
                             day.setColoreado(1);
                             Habito habitoNuevo = new Habito(estado,habito);
                             day.setHabito(habitoNuevo);
@@ -448,17 +448,104 @@ public class CustomerDAO
         return pacientes;
     }
 
+    /**
+     * Lee de la tabla de actividades de la bbdd
+     * @param lugar
+     * @param gratis
+     * @return arraylist con todas las actividades posibles
+     */
     public static ArrayList<Actividad> getListaActividades(String lugar, Boolean gratis)
     {
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
         Connection con = ConnectionDAO.getInstance().getConnection();
+        String gratis2;
+        if (gratis)
+            gratis2 = "t";
+        else
+            gratis2 = "f";
         try (PreparedStatement pst = con.prepareStatement("SELECT * FROM actividades");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
 
-                if (lugar.equals(rs.getString(2)) && gratis == Boolean.parseBoolean(rs.getString(3))) {
+                if (lugar.equals(rs.getString(2)) && gratis2.equals(rs.getString(3))) {
                     Actividad actividad = new Actividad(rs.getString(1),lugar,gratis);
                     actividades.add(actividad);
+                }
+            }
+        }
+        catch(SQLException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        return actividades;
+    }
+
+    public static void rellenarActividades(String idConectado, HashMap<Actividad,Integer> actividades)
+    {
+        Connection con = ConnectionDAO.getInstance().getConnection();
+
+        for (Map.Entry<Actividad, Integer> entry : actividades.entrySet())
+        {
+            Actividad actividad = entry.getKey();
+            Integer veces = entry.getValue();
+            String descripcion = actividad.getDescripcion();
+            String lugar = actividad.getLugar();
+            Boolean gratis = actividad.isGratis();
+            String idActividad = idConectado + descripcion;
+
+            //Si está vacío, insertamos; si no, actualizamos
+            int existeId = 0;
+            int vecesPostgre = 0;
+            try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarioactividades");
+                 ResultSet rs = pst.executeQuery()) {
+
+                while (rs.next()) {
+
+                    if(idConectado.equals(rs.getString(1)) && descripcion.equals(rs.getString(2)))
+                    {
+                        System.out.println("Este usuario tiene esta actividad guardada");
+                        existeId=1;
+                        vecesPostgre = Integer.parseInt(rs.getString(3));
+                    }
+                }
+            } catch (SQLException ex) {
+
+                System.out.println(ex.getMessage());
+            }
+
+            String statement;
+            if (existeId == 0)
+                statement = "INSERT INTO usuarioactividades (id,Actividad,veces,lugar,gratis,idactividad) VALUES (\'" + idConectado + "\',\'" + descripcion + "\'," + veces+ ",\'" + lugar + "\'," + gratis + ", \'" + idActividad +"\')";
+            else
+            {
+                statement = "UPDATE usuarioactividades SET veces=" + veces + " WHERE id = " + "\'" + idConectado + "\'";
+            }
+
+            try (PreparedStatement pst = con.prepareStatement(statement);
+                 ResultSet rs = pst.executeQuery()) {
+
+
+
+            } catch (SQLException ex) {
+
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public static HashMap<Actividad,Integer> recuperarActividades(String idConectado)
+    {
+        HashMap<Actividad,Integer> actividades = new HashMap<Actividad,Integer>();
+        Connection con = ConnectionDAO.getInstance().getConnection();
+
+        try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarioactividades");
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+
+                if (idConectado.equals(rs.getString(1))) {
+                    Actividad actividad = new Actividad(rs.getString(2),rs.getString(4),Boolean.parseBoolean(rs.getString(5)));
+                    Integer veces = Integer.parseInt(rs.getString(3));
+                    actividades.put(actividad,veces);
                 }
             }
         }

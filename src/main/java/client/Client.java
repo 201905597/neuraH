@@ -91,6 +91,15 @@ public class Client {
                 session.put("RespuestaGetActividades",respuesta8);
                 System.out.println("éxito en la búsqueda de actividades");
                 break;
+            case "/insertarActividadesResponse":
+                System.out.println("se ha realizado la insercion de actividades correctamente");
+                break;
+            case "/RecuperacionActividadesResponse":
+                HashMap<Actividad,Integer> respuesta9 = new HashMap<Actividad,Integer>();
+                respuesta9 = (HashMap<Actividad, Integer>) mensajeVuelta.getSession().get("RespuestaRecActividades") ;
+                session.put("RespuestaRecActividades",respuesta9);
+                System.out.println("éxito en la recuperación de actividades");
+                break;
 
             default:
                 Logger.getRootLogger().info("Option not found");

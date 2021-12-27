@@ -24,6 +24,11 @@ public class Usuario implements Serializable
         this.notificaciones = new HashSet<Notificacion>();
     }
 
+    public void setActividades(HashMap<Actividad,Integer> actividades)
+    {
+        this.actividadesHechas = actividades;
+    }
+
     public String getId(){
         return id;
     }
@@ -41,20 +46,28 @@ public class Usuario implements Serializable
     public void addActividad(Actividad actividad)
     {
         int veces = 1;
-        for (Map.Entry<Actividad, Integer> entry : actividadesHechas.entrySet())
+        if (!actividadesHechas.isEmpty())
         {
-            Actividad key = entry.getKey();
-            int value = entry.getValue();
-            if (key.equals(actividad))
+            for (Map.Entry<Actividad, Integer> entry : actividadesHechas.entrySet())
             {
-                veces = value + 1;
+                if (entry != null)
+                {
+                    Actividad key = entry.getKey();
+                    int value = entry.getValue();
+                    if (key.equals(actividad))
+                    {
+                        veces = value + 1;
+                    }
+                }
             }
         }
+
         actividadesHechas.put(actividad,veces);
     }
 
     public void actualizarNotificaciones()
     {
+        //añadir if calendarios != null
         for (Calendario calendario : calendarios)
         {
             for (Mes mes : calendario.getMeses())
@@ -92,6 +105,15 @@ public class Usuario implements Serializable
                 }
             }
         }
+
+        if (actividadesHechas != null)
+        {
+            for (Map.Entry<dominio.Actividad, Integer> entry : actividadesHechas.entrySet())
+            {
+                //si se ha hecho una actividad se envía una notificación
+            }
+        }
+
     }
 
     public HashSet<Notificacion> getNotificaciones()
@@ -114,11 +136,15 @@ public class Usuario implements Serializable
         Calendario calendario = null;
         for (Map.Entry<String, Calendario> entry : calendariosHM.entrySet())
         {
-        String key = entry.getKey();
-        Calendario value = entry.getValue();
-        if (tipoCalendario.equals(key))
-            calendario = value;
+            String key = entry.getKey();
+            Calendario value = entry.getValue();
+            if (tipoCalendario.equals(key))
+                calendario = value;
         }
         return calendario;
+    }
+
+    public HashMap<Actividad, Integer> getActividadesHechas() {
+        return actividadesHechas;
     }
 }

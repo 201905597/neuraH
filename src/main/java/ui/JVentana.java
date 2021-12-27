@@ -145,6 +145,8 @@ public class JVentana extends JFrame
                     JPanel pnlPac = new JPanel();
                     pnlPac.setOpaque(false);
                     JButton btnPac = new JButton(paciente.getNombre() + "-" + paciente.getId());
+                    //btnPac.setPreferredSize(new Dimension(20, 30));
+                    btnPac.setBackground(Color.PINK);
                     pnlPac.add(new JLabel("Ver seguimiento de: "));
                     pnlPac.add(btnPac);
                     btnPacientes.add(btnPac);
@@ -173,6 +175,7 @@ public class JVentana extends JFrame
                     public void actionPerformed(ActionEvent e)
                     {
                         //abro dialog para elegir el paciente o los pacientes y a dónde enviar el informe
+                        InformeDialog informeDlg = new ui.InformeDialog(JVentana.this,true);
                         System.out.println("Se ha generado el informe correctamente");
                     }
                 });
@@ -313,6 +316,14 @@ public class JVentana extends JFrame
     public void setUsuario(String id, String nombre)
     {
         this.usuario = new Usuario(id, nombre);
+        Client client = new Client();
+        HashMap<String,Object> session = new HashMap<String,Object>();
+        session.put("id",id);
+        client.metodoClient("/recuperacionActividades",session);
+        HashMap<dominio.Actividad,Integer> actividades = (HashMap<dominio.Actividad,Integer>) session.get("RespuestaGetActividades");
+        System.out.println(actividades);
+        if (actividades != null)
+            usuario.setActividades(actividades);
     }
 
     public Usuario getUsuario()

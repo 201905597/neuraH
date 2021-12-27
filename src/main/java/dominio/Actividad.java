@@ -6,9 +6,14 @@ public class Actividad implements Serializable
 {
     private String descripcion;
     private String lugar; //exterior o interior
-    private boolean gratis;
+    private Boolean gratis;
 
-    public Actividad(String descripcion, String lugar, boolean gratis)
+    public Actividad()
+    {
+
+    }
+
+    public Actividad(String descripcion, String lugar, Boolean gratis)
     {
         this.descripcion = descripcion;
         this.lugar = lugar;
@@ -25,8 +30,14 @@ public class Actividad implements Serializable
         return lugar;
     }
 
-    public boolean isGratis()
+    public Boolean isGratis()
     {
         return gratis;
+    }
+
+    @Override
+    public String toString()
+    {
+        return descripcion;
     }
 }
