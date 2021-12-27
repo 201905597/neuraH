@@ -14,9 +14,14 @@ public class Calendario implements Serializable
 
     public Calendario(String tipoCalendar, String idConectado)
     {
-        this.tipoCalendar = tipoCalendar;
+        this.setTipoCalendar(tipoCalendar);
         this.idConectado = idConectado;
         this.mesesHashSet = new HashSet<Mes>();
+    }
+
+    public void setTipoCalendar(String tipoCalendar)
+    {
+        this.tipoCalendar = tipoCalendar;
     }
 
     public String getTipoCalendar()

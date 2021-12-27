@@ -1,6 +1,7 @@
 package ui;
 
 import client.Client;
+import main.java.ui.RecomendacionDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,12 +143,15 @@ public class UsernameDialog extends JDialog
                 {
                     ventanaOwner.setIdConectado(id);
                     (UsernameDialog.this).dispose();
+                    //cambiar por un switch
                     if(tipo=="usuario")
                     {
                         ventanaOwner.setTipoUsuarioEntrante("usuario");
                         ventanaOwner.setUsuario(id,nombre);
                         ventanaOwner.gestionarEventos();
                         ventanaOwner.setVisible(true);
+                        //STRATEGY
+                        RecomendacionDialog rcg = new RecomendacionDialog(ventanaOwner, true, tipo);
                     }
                     if (tipo=="psicologo")
                     {
@@ -156,6 +160,8 @@ public class UsernameDialog extends JDialog
                         ventanaOwner.setVisible(true);
                         ventanaOwner.gestionarEventos();
                         System.out.println("he entrado como psicologo");
+                        //STRATEGY
+                        RecomendacionDialog rcg = new RecomendacionDialog(ventanaOwner, true, tipo);
                     }
                 }
                 else
@@ -183,6 +189,13 @@ public class UsernameDialog extends JDialog
         //-------------
 
         pnlCentro.add(btnCancelar);
+
+        /*this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e)
+            {
+                RecomendacionDialog rcg = new RecomendacionDialog(ventanaOwner, true);
+            }
+        });*/
 
         this.pack();
         this.setLocationRelativeTo(null);
