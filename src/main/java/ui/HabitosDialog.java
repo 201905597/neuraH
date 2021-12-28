@@ -120,7 +120,7 @@ public class HabitosDialog extends JDialog
                 {
                     for (String habito : habitosbbdd)
                     {
-                        if (habito != null)
+                        if (habito != null && !habito.equals("Deporte") && !habito.equals("Sueño")) //PRUEBA
                             HabitosDialog.this.addNuevoHabito(habito);
                     }
                 }
