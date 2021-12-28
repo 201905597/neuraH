@@ -147,14 +147,16 @@ public class ActividadesDialog extends JDialog
         btnMarcar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ventanaOwner.getUsuario().addActividad(actividad); //add actividad
-                JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
+                ventanaOwner.getUsuario().addActividad(actividad.getDescripcion(),actividad.getLugar(),actividad.isGratis()); //add actividad
                 Client client = new Client();
                 HashMap<String,Object> session = new HashMap<String,Object>();
                 session.put("id",ventanaOwner.getUsuario().getId());
                 session.put("hm",ventanaOwner.getUsuario().getActividadesHechas());
                 System.out.println("despues del add" + ventanaOwner.getUsuario().getActividadesHechas());
+                System.out.println("session get hm!!: " + session.get("hm"));
                 client.metodoClient("/insertarActividades",session);
+                JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
+                session = new HashMap<String,Object>();
             }
         });
         pnlEste.add(lblMarcar);

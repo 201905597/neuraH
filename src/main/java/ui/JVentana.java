@@ -320,10 +320,16 @@ public class JVentana extends JFrame
         HashMap<String,Object> session = new HashMap<String,Object>();
         session.put("id",id);
         client.metodoClient("/recuperacionActividades",session);
-        HashMap<dominio.Actividad,Integer> actividades = (HashMap<dominio.Actividad,Integer>) session.get("RespuestaGetActividades");
+        //HashMap<dominio.Actividad,Integer> actividades = (HashMap<dominio.Actividad,Integer>) session.get("RespuestaRecActividades");
+        HashMap<String,dominio.Actividad> actividades = (HashMap<String,dominio.Actividad>) session.get("RespuestaRecActividades");
 
-        if (actividades != null)
-            usuario.setActividades(actividades);
+        /*if (actividades != null)
+            usuario.setActividades(actividades);*/
+        for (dominio.Actividad activ : actividades.values())
+        {
+            usuario.addActividad(activ.getDescripcion(),activ.getLugar(),activ.isGratis());
+        }
+
         System.out.println("ACTIVIDADES AL SETTEAR EL USUARIO: " + actividades);
     }
 

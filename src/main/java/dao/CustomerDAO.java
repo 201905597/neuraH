@@ -486,55 +486,55 @@ public class CustomerDAO
      * @param idConectado del usuario
      * @param actividades las actividades que tiene hechas (actualizadas)
      */
-    public static void rellenarActividades(String idConectado, HashMap<Actividad,Integer> actividades)
+    public static void rellenarActividades(String idConectado, HashMap<String,Actividad> actividades)
     {
         Connection con = ConnectionDAO.getInstance().getConnection();
 
-        for (Map.Entry<Actividad, Integer> entry : actividades.entrySet())
+        for (Map.Entry<String,Actividad> entry : actividades.entrySet())
         {
-            Actividad actividad = entry.getKey();
-            Integer veces = entry.getValue();
-            String descripcion = actividad.getDescripcion();
+            String descripcion = entry.getKey();
+            Actividad actividad = entry.getValue();
+            int veces = actividad.getVecesRealizada();
             String lugar = actividad.getLugar();
             Boolean gratis = actividad.isGratis();
             String idActividad = idConectado + descripcion;
 
-            //Si está vacío, insertamos; si no, actualizamos
-            boolean existeId = false;
-            int vecesPostgre = 0;
+            boolean repetido = false;
+
             try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarioactividades");
                  ResultSet rs = pst.executeQuery()) {
-
                 while (rs.next()) {
 
-                    if(idConectado.equals(rs.getString(1)) && descripcion.equals(rs.getString(2)))
-                    {
-                        System.out.println("Este usuario tiene esta actividad guardada");
-                        existeId=true;
-                        vecesPostgre = Integer.parseInt(rs.getString(3));
+                    if (idConectado.equals(rs.getString(1)) && descripcion.equals(rs.getString(2))) {
+
+                        try (PreparedStatement pst2 = con.prepareStatement("UPDATE usuarioactividades SET veces=" + veces + " WHERE id = " + "\'" + idConectado + "\' and actividad = \'" + descripcion + "\';");
+                             ResultSet rs2 = pst2.executeQuery()) {
+                            repetido = true;
+
+
+                        } catch (SQLException ex) {
+
+                            System.out.println(ex.getMessage());
+                        }
                     }
                 }
-            } catch (SQLException ex) {
-
-                System.out.println(ex.getMessage());
             }
-
-            String statement;
-            if (!existeId)
-                statement = "INSERT INTO usuarioactividades (id,Actividad,veces,lugar,gratis,idactividad) VALUES (\'" + idConectado + "\',\'" + descripcion + "\'," + veces+ ",\'" + lugar + "\'," + gratis + ", \'" + idActividad +"\')";
-            else
+            catch(SQLException ex)
             {
-                statement = "UPDATE usuarioactividades SET veces=" + veces + " WHERE id = " + "\'" + idConectado + "\'";
+                System.out.println(ex.getMessage());
             }
 
-            try (PreparedStatement pst = con.prepareStatement(statement);
-                 ResultSet rs = pst.executeQuery()) {
+            if (!repetido)
+            {
+                try (PreparedStatement pst3 = con.prepareStatement("INSERT INTO usuarioactividades (id,Actividad,veces,lugar,gratis,idactividad) VALUES (\'" + idConectado + "\',\'" + descripcion + "\'," + veces+ ",\'" + lugar + "\'," + gratis + ", \'" + idActividad +"\');");
+                     ResultSet rs3 = pst3.executeQuery()) {
+                    repetido = true;
 
 
+                } catch (SQLException ex) {
 
-            } catch (SQLException ex) {
-
-                System.out.println(ex.getMessage());
+                    System.out.println(ex.getMessage());
+                }
             }
         }
     }
@@ -544,9 +544,9 @@ public class CustomerDAO
      * @param idConectado del usuario
      * @return las actividades guardadas
      */
-    public static HashMap<Actividad,Integer> recuperarActividades(String idConectado)
+    public static HashMap<String,Actividad> recuperarActividades(String idConectado)
     {
-        HashMap<Actividad,Integer> actividades = new HashMap<Actividad,Integer>();
+        HashMap<String,Actividad> actividades = new HashMap<String,Actividad>();
         Connection con = dao.ConnectionDAO.getInstance().getConnection();
 
         try (PreparedStatement pst = con.prepareStatement("SELECT * FROM usuarioactividades");
@@ -554,10 +554,12 @@ public class CustomerDAO
             while (rs.next()) {
 
                 if (idConectado.equals(rs.getString(1))) {
+
                     Actividad actividad = new Actividad(rs.getString(2),rs.getString(4),Boolean.parseBoolean(rs.getString(5)));
-                    Integer veces = Integer.parseInt(rs.getString(3));
-                    System.out.println("HOLA HOLO HOLU HELLO " + actividad.getDescripcion() + "--" + veces);
-                    actividades.put(actividad,veces);
+                    int veces = Integer.parseInt(rs.getString(3));
+                    actividad.setVecesRealizada(veces);
+                    System.out.println("HOLA HOLO HOLU HELLO " + actividad.getDescripcion() + "--" + actividad.getVecesRealizada());
+                    actividades.put(actividad.getDescripcion(),actividad);
                 }
             }
         }

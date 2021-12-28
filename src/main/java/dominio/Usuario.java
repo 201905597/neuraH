@@ -12,7 +12,8 @@ public class Usuario implements Serializable
     private String nombre;
     private HashSet<Calendario> calendarios;
     private HashMap<String,Calendario> calendariosHM;
-    private HashMap<Actividad,Integer> actividadesHechas; //actividades realizadas y las veces que las ha realizado el usuario
+    //private HashMap<Actividad,Integer> actividadesHechas; //actividades realizadas y las veces que las ha realizado el usuario
+    private HashMap<String,Actividad> actividadesHechas;
     private HashSet<Notificacion> notificaciones;
 
     public Usuario(String id, String nombre) {
@@ -20,11 +21,12 @@ public class Usuario implements Serializable
         this.nombre=nombre;
         this.calendarios = new HashSet<Calendario>();
         this.calendariosHM = new HashMap<String,Calendario>();
-        this.actividadesHechas = new HashMap<Actividad, Integer>();
+        //this.actividadesHechas = new HashMap<Actividad, Integer>();
+        this.actividadesHechas = new HashMap<String,Actividad>();
         this.notificaciones = new HashSet<Notificacion>();
     }
 
-    public void setActividades(HashMap<Actividad,Integer> actividades)
+    public void setActividades(HashMap<String,Actividad> actividades)
     {
         this.actividadesHechas = actividades;
     }
@@ -43,32 +45,32 @@ public class Usuario implements Serializable
         calendariosHM.put(calendario.getTipoCalendar(), calendario);
     }
 
-    public void addActividad(dominio.Actividad actividad)
-    {
-        int veces = 1;
 
+    public void addActividad(String descripcion,String lugar,Boolean gratis)
+    {
+        dominio.Actividad actividad = new dominio.Actividad(descripcion,lugar,gratis);
         if (!Usuario.this.getActividadesHechas().isEmpty())
         {
-            System.out.println("LLEGO AQUI!");
-            for (Map.Entry<dominio.Actividad, Integer> entry : actividadesHechas.entrySet())
+            if (Usuario.this.getActividadesHechas().containsKey(descripcion))
             {
-                if (entry != null)
-                {
-                    dominio.Actividad key = entry.getKey();
-                    String descripcion = key.getDescripcion();
-                    System.out.println("descripcion de la actividad del mapa" + descripcion);
-                    int value = entry.getValue();
-                    if (descripcion.equals(actividad.getDescripcion()))
-                    {
-                        veces = value + veces;
-                        System.out.println("VECES EN addActividad en user" + veces);
-                    }
-                }
+                HashMap<String, dominio.Actividad> actividadHashMap = Usuario.this.getActividadesHechas();
+                int vecesRealizadaGuardada =  actividadHashMap.get(descripcion).getVecesRealizada();
+                actividad.setVecesRealizada(vecesRealizadaGuardada + 1);
+                Usuario.this.getActividadesHechas().replace(descripcion,actividad);
+            }
+            else
+            {
+                Usuario.this.getActividadesHechas().put(descripcion,actividad);
             }
         }
-
-        actividadesHechas.put(actividad,veces);
+        else
+        {
+            HashMap<String, dominio.Actividad> nuevoHM = new HashMap<String, dominio.Actividad>();
+            nuevoHM.put(descripcion,actividad);
+            Usuario.this.setActividades(nuevoHM);
+        }
     }
+
 
     public void actualizarNotificaciones()
     {
@@ -113,7 +115,7 @@ public class Usuario implements Serializable
 
         if (actividadesHechas != null)
         {
-            for (Map.Entry<dominio.Actividad, Integer> entry : actividadesHechas.entrySet())
+            for (Map.Entry<String,dominio.Actividad> entry : actividadesHechas.entrySet())
             {
                 //si se ha hecho una actividad se envía una notificación
             }
@@ -149,7 +151,7 @@ public class Usuario implements Serializable
         return calendario;
     }
 
-    public HashMap<Actividad, Integer> getActividadesHechas() {
+    public HashMap<String,Actividad> getActividadesHechas() {
         return actividadesHechas;
     }
 }

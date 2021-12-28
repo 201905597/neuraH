@@ -7,6 +7,7 @@ public class Actividad implements Serializable
     private String descripcion;
     private String lugar; //exterior o interior
     private Boolean gratis;
+    private int vecesRealizada;
 
     public Actividad()
     {
@@ -18,6 +19,17 @@ public class Actividad implements Serializable
         this.descripcion = descripcion;
         this.lugar = lugar;
         this.gratis = gratis;
+        this.setVecesRealizada(1);
+    }
+
+    public void setVecesRealizada(int vecesRealizada)
+    {
+        this.vecesRealizada = vecesRealizada;
+    }
+
+    public int getVecesRealizada()
+    {
+        return vecesRealizada;
     }
 
     public String getDescripcion()
