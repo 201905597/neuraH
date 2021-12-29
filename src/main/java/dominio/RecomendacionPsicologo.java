@@ -24,7 +24,10 @@ public class RecomendacionPsicologo implements Recomendacion
         return centro;
     }
 
-
+    /**
+     * Strategy
+     * @return recomendación para psicólogo
+     */
     @Override
     public String recomendar()
     {

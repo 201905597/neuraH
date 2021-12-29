@@ -79,7 +79,7 @@ public class InformeDialog extends JDialog
         btnGenerar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //se genera el informe y se abre un joptionpane que indique que se ha generado bien
+                //se generaría y enviaría el informe y se abre un joptionpane que indique que se ha generado bien
                 JOptionPane.showMessageDialog(ui.InformeDialog.this,"Informe enviado correctamente");
             }
         });

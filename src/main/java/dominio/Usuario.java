@@ -12,7 +12,6 @@ public class Usuario implements Serializable
     private String nombre;
     private HashSet<Calendario> calendarios;
     private HashMap<String,Calendario> calendariosHM;
-    //private HashMap<Actividad,Integer> actividadesHechas; //actividades realizadas y las veces que las ha realizado el usuario
     private HashMap<String,Actividad> actividadesHechas;
     private HashSet<Notificacion> notificaciones;
 
@@ -21,7 +20,6 @@ public class Usuario implements Serializable
         this.nombre=nombre;
         this.calendarios = new HashSet<Calendario>();
         this.calendariosHM = new HashMap<String,Calendario>();
-        //this.actividadesHechas = new HashMap<Actividad, Integer>();
         this.actividadesHechas = new HashMap<String,Actividad>();
         this.notificaciones = new HashSet<Notificacion>();
     }
@@ -39,13 +37,22 @@ public class Usuario implements Serializable
         return nombre;
     }
 
+    /**
+     * Método para añadir un calendario nuevo (de ánimo, de deporte, de sueño...) a los que tiene asociados el usuario
+     * @param calendario
+     */
     public void addCalendario(Calendario calendario)
     {
         calendarios.add(calendario);
         calendariosHM.put(calendario.getTipoCalendar(), calendario);
     }
 
-
+    /**
+     * Método para añadir una actividad nueva o bien aumentar el número de veces que la ha realizado el usuario
+     * @param descripcion nombre o descripción de la actividad
+     * @param lugar interior o exterior
+     * @param gratis true si es gratis, false si no
+     */
     public void addActividad(String descripcion,String lugar,Boolean gratis)
     {
         dominio.Actividad actividad = new dominio.Actividad(descripcion,lugar,gratis);
@@ -71,7 +78,9 @@ public class Usuario implements Serializable
         }
     }
 
-
+    /**
+     * Método para actualizar las notificaciones que tiene asociadas el usuario
+     */
     public void actualizarNotificaciones()
     {
         //añadir if calendarios != null

@@ -13,30 +13,27 @@ public class JuegoDialog extends JDialog
         JLabel lblJuegos = new JLabel("MIS JUEGOS",SwingConstants.CENTER);
         lblJuegos.setPreferredSize(new Dimension(20, 20));
         lblJuegos.setForeground(Color.BLUE.darker());
+        lblJuegos.setFont(new Font("Basic", Font.BOLD, 23));
         this.add(lblJuegos, BorderLayout.NORTH);
 
         //JUEGOS RELAJANTES
-        /*JPanel pnlTitulo1=new JPanel();
-        pnlTitulo1.setBorder(javax.swing.BorderFactory.createTitledBorder("Titulo"));
-        JLabel lblJuegosRelajantes = new JLabel("Juegos relajantes",SwingConstants.CENTER);
-        lblJuegosRelajantes.setPreferredSize(new Dimension(40, 20));
-        lblJuegosRelajantes.setForeground(Color.BLUE.darker());
-        pnlTitulo1.add(lblJuegosRelajantes);
-        this.add(pnlTitulo1);
-        */
-
         JPanel pnlJuegosRelaj = new JPanel();
         pnlJuegosRelaj.setBorder(javax.swing.BorderFactory.createTitledBorder("Juegos relajantes"));
         pnlJuegosRelaj.setLayout(new GridLayout(2,3));
-
-
+        pnlJuegosRelaj.setBackground(new Color(245,235,242));
 
         JPanel pnlJuegosRelaj1= new JPanel();
+        pnlJuegosRelaj1.setBackground(new Color(245,235,242));
         JPanel pnlJuegosRelaj2 = new JPanel();
+        pnlJuegosRelaj2.setBackground(new Color(245,235,242));
         JPanel pnlJuegosRelaj3= new JPanel();
+        pnlJuegosRelaj3.setBackground(new Color(245,235,242));
         JPanel pnlJuegosRelaj4 = new JPanel();
+        pnlJuegosRelaj4.setBackground(new Color(245,235,242));
         JPanel pnlJuegosRelaj5= new JPanel();
+        pnlJuegosRelaj5.setBackground(new Color(245,235,242));
         JPanel pnlJuegosRelaj6 = new JPanel();
+        pnlJuegosRelaj6.setBackground(new Color(245,235,242));
 
         JLabel lblImagen1 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("Juego1.jpg")));
         pnlJuegosRelaj1.add(lblImagen1);
@@ -74,24 +71,22 @@ public class JuegoDialog extends JDialog
 
 
         //JUEGOS PARA EJERCITAR LA MENTE
-        /*JLabel lblJuegosEjercMente = new JLabel("Juegos para ejercitar la mente",SwingConstants.CENTER);
-        lblJuegosEjercMente.setPreferredSize(new Dimension(40, 20));
-        lblJuegosEjercMente.setForeground(Color.BLUE.darker());
-        this.add(lblJuegosEjercMente,BorderLayout.CENTER);
-        */
-
-
-
-
         JPanel pnlJuegosEjercMente = new JPanel();
         pnlJuegosEjercMente.setBorder(javax.swing.BorderFactory.createTitledBorder("Juegos para ejercitar la mente"));
         pnlJuegosEjercMente.setLayout(new GridLayout(2,3));
+        pnlJuegosEjercMente.setBackground(new Color(245,235,242));
         JPanel pnlJuegosEjercMente1= new JPanel();
+        pnlJuegosEjercMente1.setBackground(new Color(245,235,242));
         JPanel pnlJuegosEjercMente2 = new JPanel();
+        pnlJuegosEjercMente2.setBackground(new Color(245,235,242));
         JPanel pnlJuegosEjercMente3= new JPanel();
+        pnlJuegosEjercMente3.setBackground(new Color(245,235,242));
         JPanel pnlJuegosEjercMente4 = new JPanel();
+        pnlJuegosEjercMente4.setBackground(new Color(245,235,242));
         JPanel pnlJuegosEjercMente5= new JPanel();
+        pnlJuegosEjercMente5.setBackground(new Color(245,235,242));
         JPanel pnlJuegosEjercMente6 = new JPanel();
+        pnlJuegosEjercMente6.setBackground(new Color(245,235,242));
 
         JLabel lblImagen4 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("Juego4.png")));
         pnlJuegosEjercMente1.add(lblImagen4);

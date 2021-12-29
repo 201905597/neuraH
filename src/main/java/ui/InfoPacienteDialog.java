@@ -27,9 +27,13 @@ public class InfoPacienteDialog extends JDialog {
         this.setBackground(Color.WHITE);
 
         //NORTE
+        JPanel pnlNorte = new JPanel();
+        pnlNorte.setBackground(Color.WHITE);
         JLabel lblPaciente = new JLabel("Seguimiento de " + nombrePaciente, SwingConstants.CENTER);
-        lblPaciente.setFont(new Font("Basic", Font.BOLD, 30));
-        this.add(lblPaciente, BorderLayout.NORTH);
+        lblPaciente.setFont(new Font("Basic", Font.BOLD, 25));
+        lblPaciente.setForeground(Color.PINK);
+        pnlNorte.add(lblPaciente);
+        this.add(pnlNorte, BorderLayout.NORTH);
 
         //CENTRO: scroll del seguimiento del paciente
         scrpCentro = new JScrollPane();

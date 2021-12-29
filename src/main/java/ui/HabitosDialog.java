@@ -120,7 +120,7 @@ public class HabitosDialog extends JDialog
                 {
                     for (String habito : habitosbbdd)
                     {
-                        if (habito != null && !habito.equals("Deporte") && !habito.equals("Sueño")) //PRUEBA
+                        if (habito != null && !habito.equals("Deporte") && !habito.equals("Sueño"))
                             HabitosDialog.this.addNuevoHabito(habito);
                     }
                 }
@@ -142,6 +142,9 @@ public class HabitosDialog extends JDialog
         HabitosDialog.this.gestionarEventos();
     }
 
+    /**
+     * Cada vez que se añade un hábito se ejecuta este método para actualizar la ventana
+     */
     public void gestionarEventos()
     {
         for (JButton btn : botonesHabitos)

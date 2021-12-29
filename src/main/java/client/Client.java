@@ -37,7 +37,6 @@ public class Client {
         Message mensajeEnvio = new Message();
         Message mensajeVuelta = new Message();
         mensajeEnvio.setContext(tipoMensaje);
-        System.out.println("imprimir en cliente: " + mensajeEnvio.getContext());
         mensajeEnvio.setSession(session);
 
         cliente.sent(mensajeEnvio, mensajeVuelta);
@@ -71,7 +70,7 @@ public class Client {
                 HashSet<Mes> respuesta4 = new HashSet<Mes>();
                 respuesta4 = (HashSet<Mes>) mensajeVuelta.getSession().get("RespuestaRecHabitos");
                 session.put("RespuestaRecHabitos", respuesta4);
-                System.out.println("éxito en la recuperación de hábitos?");
+                System.out.println("éxito en la recuperación de hábitos");
                 break;
             case "/recuperacionNombreHabitosResponse":
                 HashSet<String> respuesta6 = new HashSet<String>();

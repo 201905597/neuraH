@@ -18,9 +18,17 @@ public class InfoDialog extends JDialog
         this.setLayout(new BorderLayout());
 
         //NORTE
+        JPanel pnlNorte = new JPanel();
+        pnlNorte.setBackground(Color.WHITE);
         JLabel lblTitulo = new JLabel("INFORMACIÓN",SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Courier", Font.BOLD, 20));
-        this.add(lblTitulo, BorderLayout.NORTH);
+        lblTitulo.setFont(new Font("Courier", Font.BOLD, 30));
+        lblTitulo.setForeground(Color.PINK);
+        JLabel lblLogo = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("logoo.png")));
+        JLabel lblLogo2 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("logoo.png")));
+        pnlNorte.add(lblLogo);
+        pnlNorte.add(lblTitulo);
+        pnlNorte.add(lblLogo2);
+        this.add(pnlNorte, BorderLayout.NORTH);
 
         //CENTRO (text pane)
         JPanel pnlCentro = new JPanel();
@@ -46,12 +54,13 @@ public class InfoDialog extends JDialog
 
         JScrollPane scroll = new JScrollPane(txtArea);
         scroll.setOpaque(false);
+        scroll.getViewport().setBackground(Color.WHITE);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         pnlCentro.add(scroll);
         this.add(pnlCentro, BorderLayout.CENTER);
 
         this.pack();
-        this.setBackground(new Color(253,236,250));
+        this.setBackground(Color.WHITE);
         this.setSize(800,500);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

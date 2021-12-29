@@ -13,7 +13,6 @@ public class DayPanel extends JPanel
     String diaDosDigitos;
     JButton btnDia;
     String asociacion;
-    //int coloreado; //CAMBIAR A BOOLEAN??
 
     public DayPanel(Dia dia, JVentana ventanaOwner)
     {
@@ -22,7 +21,6 @@ public class DayPanel extends JPanel
         this.tipoDia = dia.getTipoDia();
         this.diaDosDigitos = dia.getDiaDosDigitos();
         this.asociacion = dia.getAsociacion();
-        //this.coloreado = dia.
         this.setBackground(Color.WHITE);
 
         btnDia = new JButton(diaDosDigitos);

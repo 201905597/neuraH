@@ -11,7 +11,8 @@ import java.util.HashMap;
 public class UsernameDialog extends JDialog
 {
     private ui.JVentana ventanaOwner;
-    JTextField txtId,jtxf,txtCentro;
+    JTextField jtxf,txtCentro;
+    JPasswordField txtId;
     JToggleButton check;
     String tipo;
 
@@ -52,7 +53,7 @@ public class UsernameDialog extends JDialog
 
 
         JLabel lblId = new JLabel("Id: ");
-        txtId = new JTextField(12);
+        txtId = new JPasswordField(12);
         txtId.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -89,6 +90,9 @@ public class UsernameDialog extends JDialog
         tipo = "usuario";
         ventanaOwner.setTipoUsuarioEntrante(tipo);
 
+        /**
+         * Se procede de manera distinta según si se accede como psicólogo (botón seleccionado) o no
+         */
         check.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +111,9 @@ public class UsernameDialog extends JDialog
             }
         });
 
-
+        /**
+         * Se procede de manera distinta según si se accede como psicólogo (botón seleccionado) o no
+         */
         JButton btnAcceder = new JButton("Acceder");
         btnAcceder.setBackground(new Color(150,187,235));
         btnAcceder.addActionListener(new ActionListener() {
@@ -115,12 +121,11 @@ public class UsernameDialog extends JDialog
             public void actionPerformed(ActionEvent e) {
 
                 String nombre = txtUser.getText();
-                String id = txtId.getText();
+                String id = String.valueOf(txtId.getPassword());
                 String centro = txtCentro.getText();
                 Client client = new Client();
                 HashMap<String,Object> session=new HashMap<String, Object>();
 
-                System.out.println("estoy accediendo como: " + tipo);
 
                 int respuesta=0;
 
@@ -143,7 +148,7 @@ public class UsernameDialog extends JDialog
                 {
                     ventanaOwner.setIdConectado(id);
                     (UsernameDialog.this).dispose();
-                    //cambiar por un switch
+
                     if(tipo=="usuario")
                     {
                         ventanaOwner.setTipoUsuarioEntrante("usuario");
@@ -159,7 +164,6 @@ public class UsernameDialog extends JDialog
                         ventanaOwner.setPsicologo(id,nombre,centro);
                         ventanaOwner.setVisible(true);
                         ventanaOwner.gestionarEventos();
-                        System.out.println("he entrado como psicologo");
                         //STRATEGY
                         RecomendacionDialog rcg = new RecomendacionDialog(ventanaOwner, true, tipo);
                     }
@@ -172,9 +176,11 @@ public class UsernameDialog extends JDialog
 
             }
         });
-
-
         pnlCentro.add(btnAcceder);
+
+        /**
+         * Si se da a Cancelar, se cierra la app
+         */
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(150,187,235));
         btnCancelar.addActionListener(new ActionListener()
@@ -190,12 +196,6 @@ public class UsernameDialog extends JDialog
 
         pnlCentro.add(btnCancelar);
 
-        /*this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e)
-            {
-                RecomendacionDialog rcg = new RecomendacionDialog(ventanaOwner, true);
-            }
-        });*/
 
         this.pack();
         this.setLocationRelativeTo(null);

@@ -121,12 +121,11 @@ public class ActividadesDialog extends JDialog
 
                 client.metodoClient("/getListaActividades",session);
                 actividades = (ArrayList<Actividad>) session.get("RespuestaGetActividades");
-                for (Actividad act : actividades)
-                    System.out.println("Descripcion: " + act.getDescripcion());
+                /*for (Actividad act : actividades)
+                    System.out.println("Descripcion: " + act.getDescripcion());*/
                 //Se elige una actividad aleatoria de las que cumplen los requisitos de los filtros
                 int indice = (int) (Math.random() * actividades.size());
                 actividad = actividades.get(indice);
-                System.out.println(actividad.getDescripcion());
                 lblPropuesta.setText(actividad.getDescripcion());
                 pnlPropuesta.updateUI();
                 btnMarcar.setEnabled(true);
@@ -152,8 +151,6 @@ public class ActividadesDialog extends JDialog
                 HashMap<String,Object> session = new HashMap<String,Object>();
                 session.put("id",ventanaOwner.getUsuario().getId());
                 session.put("hm",ventanaOwner.getUsuario().getActividadesHechas());
-                System.out.println("despues del add" + ventanaOwner.getUsuario().getActividadesHechas());
-                System.out.println("session get hm!!: " + session.get("hm"));
                 client.metodoClient("/insertarActividades",session);
                 JOptionPane.showMessageDialog(ActividadesDialog.this,"¡Actividad realizada!");
                 session = new HashMap<String,Object>();

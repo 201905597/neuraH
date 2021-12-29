@@ -161,30 +161,6 @@ public class CustomerDAO
      * @param idConectado id del usuario que se ha conectado
      * @param fechaYemocion mapa fecha --> emocion (el estado de ánimo del usuario en dicha fecha)
      */
-    /*public static void rellenarAnimo(String idConectado, HashMap<String,String> fechaYemocion)
-    {
-
-        Connection con = ConnectionDAO.getInstance().getConnection();
-
-        for (Map.Entry<String, String> entry : fechaYemocion.entrySet())
-        {
-
-            String fecha = entry.getKey();
-            String emocion = entry.getValue();
-            String idfecha= idConectado+fecha;
-
-            try (PreparedStatement pst = con.prepareStatement("INSERT INTO usuarioanimos (id,fecha,emocion,idfecha) VALUES (\'" + idConectado + "\',\'" + fecha + "\',\'" + emocion + "\',\'" + idfecha + "\')");
-                 ResultSet rs = pst.executeQuery()) {
-
-
-
-            } catch (SQLException ex) {
-
-                System.out.println(ex.getMessage());
-            }
-        }
-
-    }*/
     public static void rellenarAnimo(String idConectado, String fecha, String emocion)
     {
 
@@ -264,7 +240,6 @@ public class CustomerDAO
                             day.setColoreado(1);
                             Animo animo = new Animo(emocion);
                             day.setAnimo(animo);
-                            //day.setBtnColor(colorEmocion.get(emocion));
                         }
                     }
                 }
@@ -280,8 +255,8 @@ public class CustomerDAO
 
     /**
      * Método para registrar los hábitos que introduce el usuario en el calendario
-     * @param idConectado
-     * @param fechaYhabito
+     * @param idConectado del usuario
+     * @param fechaYhabito hashmap de cada fecha rellenada con su hábito asociado
      */
     public static void rellenarHabitos(String idConectado, HashMap<String,String> fechaYhabito)
     {
@@ -369,7 +344,6 @@ public class CustomerDAO
                             day.setColoreado(1);
                             Habito habitoNuevo = new Habito(estado,habito);
                             day.setHabito(habitoNuevo);
-                            //day.setBtnColor(habitoColor.get(estado));
                         }
                     }
                 }
@@ -528,7 +502,6 @@ public class CustomerDAO
             {
                 try (PreparedStatement pst3 = con.prepareStatement("INSERT INTO usuarioactividades (id,Actividad,veces,lugar,gratis,idactividad) VALUES (\'" + idConectado + "\',\'" + descripcion + "\'," + veces+ ",\'" + lugar + "\'," + gratis + ", \'" + idActividad +"\');");
                      ResultSet rs3 = pst3.executeQuery()) {
-                    repetido = true;
 
 
                 } catch (SQLException ex) {
@@ -558,7 +531,6 @@ public class CustomerDAO
                     Actividad actividad = new Actividad(rs.getString(2),rs.getString(4),Boolean.parseBoolean(rs.getString(5)));
                     int veces = Integer.parseInt(rs.getString(3));
                     actividad.setVecesRealizada(veces);
-                    System.out.println("HOLA HOLO HOLU HELLO " + actividad.getDescripcion() + "--" + actividad.getVecesRealizada());
                     actividades.put(actividad.getDescripcion(),actividad);
                 }
             }

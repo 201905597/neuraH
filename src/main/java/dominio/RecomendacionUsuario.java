@@ -18,6 +18,10 @@ public class RecomendacionUsuario implements Recomendacion
     }
 
 
+    /**
+     * Strategy
+     * @return recomendación para usuario normal
+     */
     @Override
     public String recomendar()
     {

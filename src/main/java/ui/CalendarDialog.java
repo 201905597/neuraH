@@ -28,8 +28,6 @@ public class CalendarDialog extends JDialog
     private JButton btnAnadirMes;
     private JTextField txtAnio;
     private String idConectado;
-    //private ArrayList<MonthPanel> mesesArray;
-    //private HashSet<MonthPanel> mesesHSet;
     JPanel pnlCentro;
 
     private JButton btnVerMeses;
@@ -47,7 +45,6 @@ public class CalendarDialog extends JDialog
         this.hmMeses = new HashMap<String,MonthPanel>();
         this.idConectado = calendario.getIdConectado();
         this.tipoCalendar = calendario.getTipoCalendar();
-        //mesesHSet = new HashSet<MonthPanel>();
 
         //PANEL NORTE ----------------------------------------------------------------------------------
         JPanel pnlNorte = new JPanel();
@@ -87,7 +84,6 @@ public class CalendarDialog extends JDialog
                                         @Override
                                         public void actionPerformed(ActionEvent e)
                                         {
-                                            System.out.println("ENTRO EN EL ACTION PERFORMED aqui");
                                             ColoresDialog coloresDlg = new ColoresDialog(day.getDia().getFecha(),ventanaOwner,true, day,ventanaOwner.getUsuario().getId(), tipoCalendar);
                                         }
                                     });
@@ -183,14 +179,11 @@ public class CalendarDialog extends JDialog
                 {
                     if (!mesesAdded.contains(mes.getMesYAnio()))
                     {
-                        //MonthPanel mesPanel = new MonthPanel(mes, ventanaOwner);
-                        //hmMeses.put(mes.getMesYAnio(),mesPanel);
                         mesesAdded.add(mes.getMesYAnio());
                         CalendarDialog.this.addMonthPnl(mes);
                     }
 
                 }
-                //ventanaOwner.getUsuario().actualizarNotificaciones();
             }
         });
 
@@ -230,6 +223,5 @@ public class CalendarDialog extends JDialog
             cmbMesesSeg.removeItem(cmbDefault);
         pnlCentro.add(pnlMesNuevo);
         pnlCentro.updateUI();
-        //ventanaOwner.getUsuario().actualizarNotificaciones();
     }
 }

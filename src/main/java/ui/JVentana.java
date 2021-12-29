@@ -56,9 +56,7 @@ public class JVentana extends JFrame
         pnlNorte.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JLabel lblTitulo = new JLabel("NeuraHealth", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Basic", Font.BOLD, 20));
-        //JLabel lblLogo = new JLabel(new ImageIcon("images/logoo.png"));
         JLabel lblLogo = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("logoo.png")));
-        //JLabel lblLogo2 = new JLabel(new ImageIcon("images/logoo.png"));
         JLabel lblLogo2 = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("logoo.png")));
         pnlNorte.add(lblLogo);
         pnlNorte.add(lblTitulo);
@@ -68,11 +66,9 @@ public class JVentana extends JFrame
         //CENTRO
         pnlCentro = new JPanel();
         pnlCentro.setBackground(new Color(245,235,242));
-        //pnlCentro = new ImagePanel("images/palmeras.png");
         this.add(pnlCentro, BorderLayout.CENTER);
         //-------------
 
-        //this.setSize(550,700);
         this.setSize(1300,730);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -122,7 +118,6 @@ public class JVentana extends JFrame
         switch (JVentana.this.getTipoUsuarioEntrante())
         {
             case "psicologo":
-                System.out.println("VENTANA PSICOLOGO");
                 Client client = new Client();
                 HashMap<String,Object> session1=new HashMap<String, Object>();
                 session1.put("id",idConectado);
@@ -145,7 +140,6 @@ public class JVentana extends JFrame
                     JPanel pnlPac = new JPanel();
                     pnlPac.setOpaque(false);
                     JButton btnPac = new JButton(paciente.getNombre() + "-" + paciente.getId());
-                    //btnPac.setPreferredSize(new Dimension(20, 30));
                     btnPac.setBackground(Color.PINK);
                     pnlPac.add(new JLabel("Ver seguimiento de: "));
                     pnlPac.add(btnPac);
@@ -174,9 +168,8 @@ public class JVentana extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-                        //abro dialog para elegir el paciente o los pacientes y a dónde enviar el informe
+                        //se abre dialog para elegir el paciente o los pacientes y a dónde enviar el informe
                         InformeDialog informeDlg = new ui.InformeDialog(JVentana.this,true);
-                        System.out.println("Se ha generado el informe correctamente");
                     }
                 });
                 pnlSur.add(btnGenerarInforme);
@@ -185,7 +178,6 @@ public class JVentana extends JFrame
                 break;
 
             case "usuario":
-                System.out.println("VENTANA USUARIO");
                 pnlCentro.setLayout(new BoxLayout(pnlCentro, BoxLayout.	Y_AXIS));
 
                 //paneles para poder añadir label icons
@@ -323,8 +315,6 @@ public class JVentana extends JFrame
         //HashMap<dominio.Actividad,Integer> actividades = (HashMap<dominio.Actividad,Integer>) session.get("RespuestaRecActividades");
         HashMap<String,dominio.Actividad> actividades = (HashMap<String,dominio.Actividad>) session.get("RespuestaRecActividades");
 
-        /*if (actividades != null)
-            usuario.setActividades(actividades);*/
         for (dominio.Actividad activ : actividades.values())
         {
             (JVentana.this.getUsuario()).addActividad(activ.getDescripcion(),activ.getLugar(),activ.isGratis());
@@ -383,7 +373,6 @@ public class JVentana extends JFrame
             {
                 Calendario calendario = new Calendario(habito,JVentana.this.getUsuario().getId());
                 JVentana.this.getUsuario().addCalendario(calendario);
-                System.out.println(habito);
                 for (Mes mes : respuestaHabitos)
                 {
                     calendario.addMes(mes);

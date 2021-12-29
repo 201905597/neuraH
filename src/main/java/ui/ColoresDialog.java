@@ -174,7 +174,6 @@ public class ColoresDialog extends JDialog
                         diaOwner.getDia().setAnimo(animo);
                         ventanaOwner.addFechaEmocion(fecha,btnSelected.getText());
                         session.put("emocion",btnSelected.getText());
-                        //session.put("hmFE",ventanaOwner.getHmFechaEmocion()); //CAMBIAR PARA USAR ANIMO.JAVA
                         client.metodoClient("/animoUsuario",session);
                     }
                     else
@@ -182,7 +181,7 @@ public class ColoresDialog extends JDialog
                         Habito habito = new Habito(btnSelected.getText(), tipoDia);
                         diaOwner.getDia().setHabito(habito);
                         ventanaOwner.addFechaHabito(fecha, tipoDia, btnSelected.getText());
-                        session.put("hmFH",ventanaOwner.getHmFechaHabito()); //CAMBIAR PARA USAR HÁBITO.JAVA
+                        session.put("hmFH",ventanaOwner.getHmFechaHabito());
                         client.metodoClient("/habitoUsuario",session);
                     }
 

@@ -36,7 +36,7 @@ public class SocketServer extends Thread
             Message mensajeIn= (Message)objectInputStream.readObject();
             //Object to return informations
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-            System.out.println("context de mensaje in: " + mensajeIn.getContext());
+
             Message mensajeOut=new Message();
             switch (mensajeIn.getContext()) {
                 case ("/peticionAccesoUsuario"):
@@ -62,7 +62,6 @@ public class SocketServer extends Thread
                     customerControler1.insertarEmociones((String)mensajeIn.getSession().get("id"),(String)mensajeIn.getSession().get("fecha"),(String)mensajeIn.getSession().get("emocion"));
                     mensajeOut.setContext("/animoUsuarioResponse");
                     HashMap<String,Object> session1=new HashMap<String, Object>();
-                    //session.put("RespuestaAnimo",var1);
                     mensajeOut.setSession(session1);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
@@ -110,7 +109,6 @@ public class SocketServer extends Thread
                     session7.put("RespuestaRecPacientes",var7);
                     mensajeOut.setSession(session7);
                     objectOutputStream.writeObject(mensajeOut);
-                    System.out.println("setteo el contexto");
                     break;
                 case ("/getListaActividades"):
                     CustomerControler customerControler8=new CustomerControler();
@@ -120,7 +118,6 @@ public class SocketServer extends Thread
                     session8.put("RespuestaGetActividades",var8);
                     mensajeOut.setSession(session8);
                     objectOutputStream.writeObject(mensajeOut);
-                    System.out.println("setteo el contexto");
                     break;
                 case ("/insertarActividades"):
                     CustomerControler customerControler9=new CustomerControler();
@@ -129,7 +126,6 @@ public class SocketServer extends Thread
                     HashMap<String,Object> session9=new HashMap<String, Object>();
                     mensajeOut.setSession(session9);
                     objectOutputStream.writeObject(mensajeOut);
-                    System.out.println("setteo el contexto");
                     break;
                 case ("/recuperacionActividades"):
                     CustomerControler customerControler10=new CustomerControler();
@@ -140,7 +136,6 @@ public class SocketServer extends Thread
                     session10.put("RespuestaRecActividades",var10);
                     mensajeOut.setSession(session10);
                     objectOutputStream.writeObject(mensajeOut);
-                    System.out.println("setteo el contexto");
                     break;
                 default:
                     System.out.println("\nParámetro no encontrado");

@@ -1,12 +1,16 @@
 package main.java.io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 public class IORecomendaciones
 {
+    /**
+     * Lee de un csv una serie de recomendaciones y devuelve una aleatoria
+     * @param tipoUsuario usuario (normal) o psicólogo
+     * @return
+     */
     public static String getRecomendacion(String tipoUsuario)
     {
         HashMap<Integer, String> hmUsuario = new HashMap<Integer, String>();
@@ -14,8 +18,10 @@ public class IORecomendaciones
         String recomendacion = "¡Vaya! No se ha encontrado una recomendación para ti hoy";
         try
         {
-            FileReader fr = new FileReader("images/recomendaciones.csv");
-            BufferedReader br = new BufferedReader(fr);
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            InputStream inputStream = IORecomendaciones.class.getClassLoader().getResourceAsStream("recomendaciones.csv");
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader br = new BufferedReader(isr);
             String linea = null;
             while((linea = br.readLine()) != null)
             {

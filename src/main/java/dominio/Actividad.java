@@ -9,10 +9,14 @@ public class Actividad implements Serializable
     private Boolean gratis;
     private int vecesRealizada;
 
+    /**
+     * Constructor para poder "inicializar" una actividad sin sus atributos
+     */
     public Actividad()
     {
 
     }
+
 
     public Actividad(String descripcion, String lugar, Boolean gratis)
     {
