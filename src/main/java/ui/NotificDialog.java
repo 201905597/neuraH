@@ -19,6 +19,7 @@ public class NotificDialog extends JDialog
     private JVentana ventanaOwner;
     private HashSet<Notificacion> notificaciones;
     ArrayList<JLabel> jlabels;
+    JScrollPane scrpNotifs;
 
     public NotificDialog(JVentana ventanaOwner, boolean modal)
     {
@@ -27,8 +28,8 @@ public class NotificDialog extends JDialog
         this.notificaciones = new HashSet<Notificacion>();
         this.jlabels = new ArrayList<JLabel>();
         this.setModal(modal);
-        this.setForeground(Color.WHITE);
         this.setBackground(Color.WHITE);
+        this.setForeground(Color.WHITE);
 
         //NORTE ----------------------------------------------------------
         JLabel lblMisNotif = new JLabel("MIS NOTIFICACIONES",SwingConstants.CENTER);
@@ -40,7 +41,8 @@ public class NotificDialog extends JDialog
 
         //CENTRO ---------------------------------------------------------
         JPanel pnlCentro = new JPanel();
-        pnlCentro.setLayout(new GridLayout(7,1));
+        pnlCentro.setBackground(Color.WHITE);
+        pnlCentro.setLayout(new GridLayout(7,2));
 
         if (!ventanaOwner.calendariosRecuperados())
             ventanaOwner.recuperarCalendarios(ventanaOwner.getUsuario().getId());
@@ -55,6 +57,7 @@ public class NotificDialog extends JDialog
         for (JLabel jlbl : jlabels)
         {
             jlbl.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            jlbl.setBackground(Color.WHITE);
             pnlCentro.add(jlbl);
             pnlCentro.updateUI();
         }
@@ -63,7 +66,8 @@ public class NotificDialog extends JDialog
         //----------------------------------------------------------------
 
         this.pack();
-        this.setSize(600,400);
+        this.setResizable(true);
+        this.setSize(1300,400);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }

@@ -113,11 +113,18 @@ public class Usuario implements Serializable
             }
         }
 
-        if (actividadesHechas != null)
+        if (!Usuario.this.getActividadesHechas().isEmpty())
         {
-            for (Map.Entry<String,dominio.Actividad> entry : actividadesHechas.entrySet())
+            for (Map.Entry<String,dominio.Actividad> entry : Usuario.this.getActividadesHechas().entrySet())
             {
                 //si se ha hecho una actividad se envía una notificación
+                String descripcion = entry.getKey();
+
+                String textoNotif = "¡Enhorabuena! Has hecho la actividad " + descripcion + " al menos una vez :)";
+
+                Notificacion notificacionAct = new Notificacion(textoNotif);
+                if (!notificaciones.contains(notificacionAct))
+                    notificaciones.add(notificacionAct);
             }
         }
 

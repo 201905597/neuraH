@@ -24,9 +24,11 @@ public class InfoPacienteDialog extends JDialog {
         this.idPaciente = nombreId.substring(nombreId.indexOf("-") + 1);
         this.nombrePaciente = nombreId.substring(0, nombreId.indexOf("-"));
         this.ventanaOwner = ventanaOwner;
+        this.setBackground(Color.WHITE);
 
         //NORTE
-        JLabel lblPaciente = new JLabel("Seguimiento de " + nombrePaciente);
+        JLabel lblPaciente = new JLabel("Seguimiento de " + nombrePaciente, SwingConstants.CENTER);
+        lblPaciente.setFont(new Font("Basic", Font.BOLD, 30));
         this.add(lblPaciente, BorderLayout.NORTH);
 
         //CENTRO: scroll del seguimiento del paciente

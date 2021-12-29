@@ -327,7 +327,7 @@ public class JVentana extends JFrame
             usuario.setActividades(actividades);*/
         for (dominio.Actividad activ : actividades.values())
         {
-            usuario.addActividad(activ.getDescripcion(),activ.getLugar(),activ.isGratis());
+            (JVentana.this.getUsuario()).addActividad(activ.getDescripcion(),activ.getLugar(),activ.isGratis());
         }
 
         System.out.println("ACTIVIDADES AL SETTEAR EL USUARIO: " + actividades);
